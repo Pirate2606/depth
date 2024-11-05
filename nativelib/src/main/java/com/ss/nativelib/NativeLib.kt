@@ -1,16 +1,26 @@
 package com.ss.nativelib
 
-import ai.onnxruntime.OnnxTensor
 import android.content.Context
 import android.graphics.Bitmap
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.runBlocking
 
-class NativeLib(context: Context, modelName: String) {
-    private val depthAnything = DepthAnything(context, modelName)
+class NativeLib(modelName: String) {
+    private val depthAnything = DepthAnything(modelName)
 
-    suspend fun predictDepth(inputImage: Bitmap): Bitmap = withContext(Dispatchers.Default) {
-        val (depthImage, _) = depthAnything.predict(inputImage)
-        depthImage
+    fun predictDepth(): String {
+//        val (depthImage, _) = depthAnything.predict(inputImage)
+        return "Hello"
+    }
+
+    companion object {
+        private var instance: NativeLib? = null
+
+        @JvmStatic
+        fun getInstance(modelName: String): NativeLib {
+            if (instance == null) {
+                instance = NativeLib(modelName)
+            }
+            return instance!!
+        }
     }
 }

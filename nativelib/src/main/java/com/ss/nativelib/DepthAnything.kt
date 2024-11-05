@@ -7,15 +7,25 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Matrix
+import android.util.Log
 import androidx.core.graphics.get
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.io.File
 import java.nio.ByteBuffer
 
-class DepthAnything(context: Context, val modelName: String) {
+class DepthAnything(val modelName: String) {
 
     private val ortEnvironment = OrtEnvironment.getEnvironment()
-    private val ortSession = ortEnvironment.createSession(context.assets.open(modelName).readBytes())
+//    private val ortSession = ortEnvironment.createSession(context.assets.open(modelName).readBytes())
+    private val ortSession: OrtSession
+
+    init {
+        Log.i("LOGS", modelName);
+        val modelBytes = File(modelName).readBytes()
+        ortSession = ortEnvironment.createSession(modelBytes)
+    }
+
     private val inputName = ortSession.inputNames.iterator().next()
 
     private val inputDim: Int
