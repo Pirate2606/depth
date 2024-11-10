@@ -1,15 +1,12 @@
 package com.ss.nativelib
 
-import android.content.Context
-import android.graphics.Bitmap
-import kotlinx.coroutines.runBlocking
 
 class NativeLib(modelName: String) {
     private val depthAnything = DepthAnything(modelName)
 
-    fun predictDepth(): String {
-//        val (depthImage, _) = depthAnything.predict(inputImage)
-        return "Hello"
+    fun predictDepth(inputImage: ByteArray): Boolean {
+        val result = depthAnything.predict(inputImage)
+        return result
     }
 
     companion object {
